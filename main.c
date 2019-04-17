@@ -1,37 +1,38 @@
 #include <stdio.h>
 #include <string.h>
 
-int decrypt(int x);
+//ABCDEFGHIJKLMNOPQRSTUVWXYZ
+//QWERTYUIOPASDFGHJKLZXCVBNM
+
+int encrypt(int x);
 
 int main() {
-    char c[1000]; //creates an array which can store up to 1000 characters
-    char de[1000];
-    int i, j, n;
-    FILE *input; //pointer to input
-    input = fopen("input", "r"); //reads input
-    fscanf(input, " %[^\n]s", c); //scans the entirety of input and assigns it to 1 string
-    n=strlen(c); //assigns the amount of characters in message to variable n
-    printf("Encrypted Message: %s len: %d\n", c, n);
-    for(i = 0; i<n; i++) { // m[i] != '\0' && en[i] != '\0' i accesses each character in message string
-        de[i] = decrypt(c[i]); //decrypts each character in string
-        //printf("\t%d, %c, %d, %c\n", en[i], en[i], m[i], m[i]);
+    char m[1000]; //array of length 1000 to hold message string
+    char en[1000];
+    int i, len;
+    FILE *input; //file pointer to input
+    input = fopen("input", "r"); //opens input for reading
+    fscanf(input, " %[^\n]s", m); //scans all of input and stores it in m
+    len = strlen(m); //stores number of characters of the message in variable len
+    printf("Original Message: %s %d\n", m, len);
+    for(i = 0; i < len; i++) {
+        en[i] = encrypt(m[i]); //encrypts original message
+        //printf("\t%d %c %d %c\n", m[i], m[i], en[i], en[i]); //prints ASCII value and character for the character in the original message and the encrypted message
     }
-    printf("Decrypted Message: %s", de); //prints the whole decrypted message
+    printf("Encrypted Message: %s\n", en);
     return 0;
 }
 
-int decrypt(int x) { //encryption function definition
-    int key = 1;
+int encrypt(int x) {
     int e;
-    if(x == 32 ) { //if the character is space, return a space
-        return 32;
+    char enc_index[26] = {'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M'}; //this string holds the value for each new letter in the index of the array
+    x = x - 65; //this shifts the ASCII number for the capital letter by 65 to make our equation below work
+    if(x >= 0 && x < 26) { //if character is an uppercase letter
+        e = enc_index[x]; //assigns the new letter in variable e
+        return e;
     }
-    else if(x == 0){ //if the character is a NULL character, return NULL
-    return 0;   
-    }    
     else {
-        x = x-65; //this shifts the ASCII number for the capital letter by 65 to make our equation below work
-    e = (x - key)%26 + 65; //shifts the letter by the given key and then adds 65 to return it to its proper ASCII code
-    return e;
-}
+        x = x + 65;
+        return x;
+    }
 }
