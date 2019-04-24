@@ -6,11 +6,11 @@
 
 int decrypt(int x);
 
-int find_index(char )
+int find_index(int match);
 
 int main() {
     char c[1000]; //array of length 1000 to hold message string
-    char de[1000];
+    char de[1000];//array of length 1000 to hold decrypted message string
     int i, len;
     FILE *input; //file pointer to input
     input = fopen("input", "r"); //opens input for reading
@@ -26,19 +26,25 @@ int main() {
 }
 
 int decrypt(int x) {
-    int e, c_index, g;
-    char enc_index[26] = {'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M'}; //this string holds the value for each new letter in the index of the array
+    int e;
     x = x - 65; //this shifts the ASCII number for the capital letter by 65 to make our equation below work
     if(x >= 0 && x < 26) {
-        c_index = find_index(x)
+        e = find_index(x);
+        e = e + 65; //shifts the number by 65 to make our character the correct ASCII number corresponding to the letter
+        return e;
+}
+    else {
+        x = x + 65;
+        return x;
     }
 }
 
-int find_index(char enc_index[], char match) {
+int find_index(int match) {
     int j;
     char enc_index[26] = {'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M'}; //this string holds the value for each new letter in the index of the array
     for(j = 0; j < 26; j++) {
-        if(enc_index[j] == match) {
+        enc_index[j] = enc_index[j] - 65;
+        if(enc_index[j] == match) { //when the character 'match' is the same as the character in the array enc_index, return the index corresponding to that character in the array
             return j;
         }
     }
